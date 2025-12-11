@@ -11,7 +11,7 @@ const description = "احصل على أفضل الكوبونات والخصوم�
 	<main class="min-h-screen pb-20">
 		<!-- Hero Section -->
 		<section class="bg-athek-primary text-white py-16 px-4 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10 bg-[url('/athek-logo.png')] bg-center bg-no-repeat bg-contain"></div>
+            <div class="absolute inset-0 opacity-10 bg-[url('/athek-deals/athek-logo.png')] bg-center bg-no-repeat bg-contain"></div>
 			<div class="container mx-auto max-w-6xl relative z-10 text-center">
 				<h1 class="text-4xl md:text-5xl font-bold mb-4">
 					أفضل العروض والخصومات
@@ -43,8 +43,8 @@ const description = "احصل على أفضل الكوبونات والخصوم�
 						title={deal.title.split(' ').slice(0, 3).join(' ')} 
                         discount={deal.title}
 						code={deal.couponCode}
-						image={deal.image}
-						url={`/coupon/${deal.slug}`}
+						image={`${import.meta.env.BASE_URL}${deal.image}`}
+						url=`${import.meta.env.BASE_URL}/coupon/${deal.slug}`
 					/>
 				))}
 			</div>

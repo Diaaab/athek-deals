@@ -1,19 +1,19 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import deals from '../../data/deals.json';
-import { generateCouponContent } from '../../utils/contentGenerator';
+import Layout from "../../layouts/Layout.astro";
+import deals from "../../data/deals.json";
+import { generateCouponContent } from "../../utils/contentGenerator";
 
 export async function getStaticPaths() {
-  return deals.map((deal) => ({
-    params: { slug: deal.slug },
-    props: { deal },
-  }));
+    return deals.map((deal) => ({
+        params: { slug: deal.slug },
+        props: { deal },
+    }));
 }
 
 const { deal } = Astro.props;
 const content = generateCouponContent(deal.title, deal.title, deal.couponCode); // title usually contains discount info like "5% off"
 
-const title = `${deal.title} - كود خصم ${deal.couponCode || 'فعال'} | تطبيق اثق`;
+const title = `${deal.title} - كود خصم ${deal.couponCode || "فعال"} | تطبيق اثق`;
 const description = `استخدم كود خصم ${deal.title} (${deal.couponCode}) ووفر المال عند التسوق. كوبون حصري ومجرب من تطبيق اثق.`;
 ---
 
@@ -23,9 +23,12 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
         <div class="bg-white border-b border-gray-200">
             <div class="container mx-auto px-4 py-4">
                 <nav class="text-sm font-medium text-gray-500">
-                   <a href="/" class="hover:text-athek-primary">الرئيسية</a> 
-                   <span class="mx-2">/</span>
-                   <span class="text-gray-900">{deal.title}</span>
+                    <a
+                        href={import.meta.env.BASE_URL}
+                        class="hover:text-athek-primary">الرئيسية</a
+                    >
+                    <span class="mx-2">/</span>
+                    <span class="text-gray-900">{deal.title}</span>
                 </nav>
             </div>
         </div>
@@ -34,22 +37,36 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Sidebar (Coupon Card) -->
                 <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24 border border-gray-100">
+                    <div
+                        class="bg-white rounded-2xl shadow-sm p-6 sticky top-24 border border-gray-100"
+                    >
                         <div class="flex justify-center mb-6">
-                            <img src={deal.image} alt={deal.title} class="w-32 h-32 object-contain bg-gray-50 rounded-full p-2" />
+                            <img
+                                src={`${import.meta.env.BASE_URL}${deal.image}`}
+                                alt={deal.title}
+                                class="w-32 h-32 object-contain bg-gray-50 rounded-full p-2"
+                            />
                         </div>
-                        <h1 class="text-xl font-bold text-center mb-2">{deal.title}</h1>
+                        <h1 class="text-xl font-bold text-center mb-2">
+                            {deal.title}
+                        </h1>
                         <div class="text-center mb-6">
-                            <span class="inline-block bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
+                            <span
+                                class="inline-block bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full"
+                            >
                                 كوبون فعال
                             </span>
                         </div>
-                        
-                        <div class="bg-gray-50 rounded-xl p-4 border-2 border-dashed border-gray-200 mb-4">
-                            <div class="text-center text-gray-500 text-sm mb-2">انسخ الكود</div>
+
+                        <div
+                            class="bg-gray-50 rounded-xl p-4 border-2 border-dashed border-gray-200 mb-4"
+                        >
+                            <div class="text-center text-gray-500 text-sm mb-2">
+                                انسخ الكود
+                            </div>
                             <div class="relative group">
                                 <!-- Hidden State -->
-                                <button 
+                                <button
                                     id="reveal-btn"
                                     class="w-full bg-white p-3 rounded-lg border border-gray-200 flex items-center justify-center gap-2 hover:border-athek-primary transition-colors"
                                     onclick="
@@ -63,28 +80,78 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
                                         setTimeout(() => tooltip.classList.add('opacity-0'), 2000);
                                     "
                                 >
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    <span class="font-bold text-gray-700">إظهار الكود</span>
+                                    <svg
+                                        class="w-5 h-5 text-gray-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        ><path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                        ></path><path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                        ></path></svg
+                                    >
+                                    <span class="font-bold text-gray-700"
+                                        >إظهار الكود</span
+                                    >
                                 </button>
-                                
+
                                 <!-- Revealed State -->
-                                <div id="code-display" class="hidden flex items-center justify-between gap-2 bg-white p-2 rounded-lg border-2 border-athek-primary cursor-pointer relative" onclick="
+                                <div
+                                    id="code-display"
+                                    class="hidden flex items-center justify-between gap-2 bg-white p-2 rounded-lg border-2 border-athek-primary cursor-pointer relative"
+                                    onclick="
                                     const code = document.getElementById('actual-code').textContent;
                                     navigator.clipboard.writeText(code);
                                     const tooltip = document.getElementById('copy-tooltip');
                                     tooltip.classList.remove('opacity-0');
                                     setTimeout(() => tooltip.classList.add('opacity-0'), 2000);
-                                ">
-                                    <span id="actual-code" class="text-xl font-mono font-bold text-athek-primary flex-1 text-center select-all">{deal.couponCode}</span>
-                                    <button class="bg-athek-primary text-white p-2 rounded-md hover:bg-opacity-90 transition-opacity" title="Copy">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                "
+                                >
+                                    <span
+                                        id="actual-code"
+                                        class="text-xl font-mono font-bold text-athek-primary flex-1 text-center select-all"
+                                        >{deal.couponCode}</span
+                                    >
+                                    <button
+                                        class="bg-athek-primary text-white p-2 rounded-md hover:bg-opacity-90 transition-opacity"
+                                        title="Copy"
+                                    >
+                                        <svg
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            ><path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                                            ></path></svg
+                                        >
                                     </button>
-                                    <div class="absolute inset-0 flex items-center justify-center bg-gray-900/80 text-white text-xs rounded opacity-0 transition-opacity duration-200 pointer-events-none" id="copy-tooltip">تم النسخ!</div>
+                                    <div
+                                        class="absolute inset-0 flex items-center justify-center bg-gray-900/80 text-white text-xs rounded opacity-0 transition-opacity duration-200 pointer-events-none"
+                                        id="copy-tooltip"
+                                    >
+                                        تم النسخ!
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <a href={deal.merchantUrl} target="_blank" rel="nofollow noopener" class="block w-full bg-athek-secondary text-athek-primary font-bold text-center py-3 rounded-xl hover:bg-opacity-90 transition-colors shadow-md">
+                        <a
+                            href={deal.merchantUrl}
+                            target="_blank"
+                            rel="nofollow noopener"
+                            class="block w-full bg-athek-secondary text-athek-primary font-bold text-center py-3 rounded-xl hover:bg-opacity-90 transition-colors shadow-md"
+                        >
                             اذهب للمتجر
                         </a>
                     </div>
@@ -92,7 +159,9 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
 
                 <!-- Main Content -->
                 <div class="lg:col-span-2">
-                    <div class="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+                    <div
+                        class="bg-white rounded-2xl shadow-sm p-8 border border-gray-100"
+                    >
                         <Fragment set:html={content} />
                     </div>
                 </div>
@@ -101,16 +170,16 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
     </main>
 
     <script is:inline>
-        document.querySelectorAll('button[title="Copy"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+        document.querySelectorAll('button[title="Copy"]').forEach((btn) => {
+            btn.addEventListener("click", () => {
                 const code = btn.previousElementSibling.textContent;
                 navigator.clipboard.writeText(code);
                 // Simple tooltip logic
                 const tooltip = btn.nextElementSibling;
                 // Since this is inline script, best to keep it simple, or use a framework component.
                 // Just alert or simple feedback
-                btn.classList.add('bg-green-600');
-                setTimeout(() => btn.classList.remove('bg-green-600'), 1000);
+                btn.classList.add("bg-green-600");
+                setTimeout(() => btn.classList.remove("bg-green-600"), 1000);
             });
         });
     </script>
