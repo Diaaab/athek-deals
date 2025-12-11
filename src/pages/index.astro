@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CouponCard from '../components/CouponCard.astro';
+import deals from '../data/deals.json';
+
+const title = "تطبيق اثق - كوبونات وخصومات حصرية";
+const description = "احصل على أفضل الكوبونات والخصومات الحصرية لمتاجرك المفضلة من تطبيق اثق. وفر المال مع أحدث العروض.";
+---
+
+<Layout title={title} description={description}>
+	<main class="min-h-screen pb-20">
+		<!-- Hero Section -->
+		<section class="bg-athek-primary text-white py-16 px-4 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[url('/athek-logo.png')] bg-center bg-no-repeat bg-contain"></div>
+			<div class="container mx-auto max-w-6xl relative z-10 text-center">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">
+					أفضل العروض والخصومات
+					<span class="text-athek-secondary block mt-2">في مكان واحد</span>
+				</h1>
+				<p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
+					اكتشف مئات الكوبونات الحصرية لمتاجرك المفضلة ووفر المال في كل عملية شراء
+				</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#deals" class="bg-athek-secondary text-athek-primary font-bold py-3 px-8 rounded-full hover:bg-white transition-colors">
+                        تصفح العروض
+                    </a>
+                </div>
+			</div>
+		</section>
+
+		<!-- Deals Grid -->
+		<section id="deals" class="container mx-auto max-w-7xl px-4 py-12">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 border-r-4 border-athek-secondary pr-4">
+                    أحدث الكوبونات
+                </h2>
+                <!-- Optional: Filters could go here -->
+            </div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				{deals.map((deal) => (
+					<CouponCard
+						title={deal.title.split(' ').slice(0, 3).join(' ')} 
+                        discount={deal.title}
+						code={deal.couponCode}
+						image={deal.image}
+						url={`/coupon/${deal.slug}`}
+					/>
+				))}
+			</div>
+		</section>
+
+        <!-- About Section Placeholder -->
+        <section class="bg-white py-12 border-t border-gray-100">
+            <div class="container mx-auto max-w-4xl px-4 text-center">
+                <h2 class="text-2xl font-bold text-athek-primary mb-4">لماذا تختار تطبيق اثق؟</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    نسعى في تطبيق اثق لتوفير أفضل تجربة تسوق من خلال جمع وتوفير أحدث أكواد الخصم الفعالة والمجربة لأهم المتاجر المحلية والعالمية.
+                </p>
+            </div>
+        </section>
+	</main>
+</Layout>

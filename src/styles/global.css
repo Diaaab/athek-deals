@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+    --color-athek-primary: #0F2C59;
+    --color-athek-secondary: #DAC0A3;
+    --color-athek-accent: #e63946;
+    --color-athek-light: #F8F9FA;
+
+    --font-sans: "Cairo", sans-serif;
+}

@@ -1,0 +1,67 @@
+---
+interface Props {
+	title: string;
+	code: string;
+	discount: string;
+	image: string;
+	url: string;
+}
+
+const { title, code, discount, image, url } = Astro.props;
+---
+
+<div class="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden h-full flex flex-col">
+    <!-- Link wrapper for top part only -->
+	<a href={url} class="p-6 flex flex-col items-center text-center flex-grow">
+		<div class="w-24 h-24 mb-4 relative flex items-center justify-center bg-gray-50 rounded-full p-2 group-hover:scale-105 transition-transform">
+			<img 
+				src={image} 
+				alt={title} 
+				class="max-w-full max-h-full object-contain"
+                loading="lazy"
+			/>
+		</div>
+		<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans line-clamp-1 group-hover:text-athek-primary transition-colors">
+			{title}
+		</h3>
+        <p class="text-sm text-gray-500 line-clamp-2 min-h-[2.5rem]">
+            {discount}
+        </p>
+    </a>
+
+    <!-- Footer part with Code Reveal -->
+	<div class="p-4 pt-0 mt-auto">
+		<div class="w-full">
+            <button
+                class="w-full bg-athek-light hover:bg-athek-secondary/20 text-athek-primary font-bold py-3 px-4 rounded-lg border border-dashed border-athek-primary/30 flex justify-center items-center gap-2 transition-all relative overflow-hidden group/btn"
+                data-code={code}
+                onclick="
+                    const btn = this;
+                    const code = btn.getAttribute('data-code');
+                    const span = btn.querySelector('span');
+                    
+                    if (btn.classList.contains('revealed')) {
+                        navigator.clipboard.writeText(code);
+                        const originalText = span.textContent;
+                        span.textContent = 'تم النسخ!';
+                        setTimeout(() => span.textContent = originalText, 1500);
+                    } else {
+                        btn.classList.add('revealed');
+                        btn.classList.remove('bg-athek-light');
+                        btn.classList.add('bg-white', 'border-athek-primary');
+                        span.textContent = code;
+                        span.classList.add('font-mono', 'text-xl');
+                        // Copy on reveal as well? Or just reveal? Usually distinct actions but user said 'upon click appears'
+                        // Let's just reveal first.
+                    }
+                "
+            >
+                <svg class="w-5 h-5 text-athek-primary group-[.revealed]/btn:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span class="truncate">إظهار الكوبون</span>
+            </button>
+		</div>
+        <a href={url} class="block mt-3 text-center text-sm font-bold text-white bg-athek-primary py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
+            عرض التفاصيل
+        </a>
+	</div>
+</div>
