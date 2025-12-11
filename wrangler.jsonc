@@ -1,11 +1,6 @@
 {
   "name": "athek-deals",
-  "type": "javascript",
   "site": {
     "bucket": "./dist"
-  },
-  "build": {
-    "command": "npm run build",
-    "cwd": "./"
   }
 }
