@@ -3,6 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import deals from "../../data/deals.json";
 import { generateCouponContent } from "../../utils/contentGenerator";
 
+import CouponCard from "../../components/CouponCard.astro";
+
 export async function getStaticPaths() {
     return deals.map((deal) => ({
         params: { slug: deal.slug },
@@ -12,6 +14,12 @@ export async function getStaticPaths() {
 
 const { deal } = Astro.props;
 const content = generateCouponContent(deal.title, deal.title, deal.couponCode); // title usually contains discount info like "5% off"
+
+// Get 5 related coupons (random for now, excluding current)
+const relatedDeals = deals
+    .filter((d) => d.slug !== deal.slug)
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 5);
 
 const title = `${deal.title} - كود خصم ${deal.couponCode || "فعال"} | تطبيق اثق`;
 const description = `استخدم كود خصم ${deal.title} (${deal.couponCode}) ووفر المال عند التسوق. كوبون حصري ومجرب من تطبيق اثق.`;
@@ -168,6 +176,26 @@ const description = `استخدم كود خصم ${deal.title} (${deal.couponCode
             </div>
         </div>
     </main>
+
+    <!-- Related Offers Section -->
+    <section class="bg-white py-12 border-t border-gray-100">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8 border-r-4 border-athek-secondary pr-4">
+                عروض مشابهة قد تعجبك
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {relatedDeals.map((related) => (
+                    <CouponCard
+                        title={related.title.split(' ').slice(0, 3).join(' ')} 
+                        discount={related.title}
+                        code={related.couponCode}
+                        image={`${import.meta.env.BASE_URL}${related.image}`}
+                        url=`${import.meta.env.BASE_URL}/coupon/${related.slug}`
+                    />
+                ))}
+            </div>
+        </div>
+    </section>
 
     <script is:inline>
         document.querySelectorAll('button[title="Copy"]').forEach((btn) => {
